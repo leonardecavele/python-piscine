@@ -1,23 +1,12 @@
 class Plant:
-    def __init__(
-                self,
-                name: str,
-                height: int,
-                age: int
-                ) -> None:
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
         self.height = height
         self.age = age
 
 
 class Flower(Plant):
-    def __init__(
-                self,
-                name: str,
-                height: int,
-                age: int,
-                color: str
-                ) -> None:
+    def __init__(self, name: str, height: int, age: int, color: str) -> None:
         super().__init__(name, height, age)
         self.color = color
 
@@ -32,13 +21,8 @@ class Flower(Plant):
 
 
 class Tree(Plant):
-    def __init__(
-                self,
-                name: str,
-                height: int,
-                age: int,
-                trunk_diameter: int
-                ) -> None:
+    def __init__(self, name: str, height: int, age: int,
+                 trunk_diameter: int) -> None:
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
 
@@ -53,14 +37,8 @@ class Tree(Plant):
 
 
 class Vegetable(Plant):
-    def __init__(
-                self,
-                name: str,
-                height: int,
-                age: int,
-                harvest_season: str,
-                nutritional_value: str
-                ) -> None:
+    def __init__(self, name: str, height: int, age: int, harvest_season: str,
+                 nutritional_value: str) -> None:
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = nutritional_value
