@@ -9,7 +9,6 @@ class Plant:
 
 
 class Garden:
-
     def __init__(self) -> None:
         self.plants = []
 
