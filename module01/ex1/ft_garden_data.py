@@ -4,11 +4,11 @@ class Plant:
         self.height = height
         self.age = age
 
-    def __str__(self) -> None:
+    def __str__(self) -> str:
         return f"{self.name}: {self.height}cm, {self.age} days old"
 
 
-def main() -> None:
+def main() -> str:
     p1 = Plant("Rose", 25, 30)
     p2 = Plant("Sunflower", 80, 45)
     p3 = Plant("Cactus", 15, 120)
