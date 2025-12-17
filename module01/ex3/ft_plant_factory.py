@@ -6,25 +6,23 @@ class Plant:
         self.height = height
         self.age = age
         Plant.count += 1
+        print(f"Created: {self.name} ({self.height}cm, {self.age} days)")
 
 
-class Garden:
+class Factory:
     def __init__(self) -> None:
         self.plants = []
 
-    def add(self, new: Plant) -> None:
-        self.plants += [Plant]
-        print(f"Created: {new.name} ({new.height}cm, {new.age} days)")
+    def add(self, new_plants: list[tuple[str, int, int]]) -> None:
+        for name, height, age in new_plants:
+            self.plants += [Plant(name, height, age)]
 
 
 def main() -> None:
-    g1 = Garden()
+    f1 = Factory()
     print("=== Plant Factory Output ===")
-    g1.add(Plant("Rose", 25, 30))
-    g1.add(Plant("Oak", 200, 365))
-    g1.add(Plant("Cactus", 5, 90))
-    g1.add(Plant("Sunflower", 80, 45))
-    g1.add(Plant("Fern", 15, 120))
+    f1.add([("Rose", 25, 30), ("Oak", 200, 365), ("Cactus", 5, 90),
+           ("Sunflower", 80, 45), ("Fern", 15, 120)])
     print(f"\nTotal plants created: {Plant.count}")
 
 
