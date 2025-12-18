@@ -1,15 +1,12 @@
 class Plant:
-    """Basic plant with a name and a positive height in centimeters.
-
-    The height is validated to be at least 1 cm.
-    """
+    """Basic plant with a name and a height in centimeters."""
 
     def __init__(self, name: str, height: int) -> None:
         """Create a Plant.
 
         Args:
-            name: Plant name.
-            height: Initial height in centimeters. Values <= 0 become 1.
+            name:   Plant name.
+            height: Initial height in centimeters.
         """
         self.__name: str = name
         self.__height: int = Plant.valid_height(height)
@@ -21,7 +18,7 @@ class Plant:
 
     @staticmethod
     def valid_height(height: int) -> int:
-        """Validate a height value.
+        """Validate a given height value.
 
         Args:
             height: Height in centimeters.
@@ -41,7 +38,7 @@ class Plant:
 
     @property
     def height(self) -> int:
-        """Get the current plant height in centimeters."""
+        """Get the current plant height."""
         return self.__height
 
     def __str__(self) -> str:
@@ -50,15 +47,14 @@ class Plant:
 
 
 class FloweringPlant(Plant):
-    """A plant that can have flowers with a given color and blooming status."""
+    """A plant with flowers, a given color and a blooming status."""
 
     def __init__(self, name: str, height: int, color: str,
                  blooming: bool) -> None:
         """Create a FloweringPlant.
 
         Args:
-            name: Plant name.
-            height: Initial height in centimeters. Values <= 0 become 1.
+            name, height: cf. Plant
             color: Flower color.
             blooming: True if the plant is currently blooming.
         """
@@ -67,7 +63,7 @@ class FloweringPlant(Plant):
         self.__blooming = blooming
 
     def __str__(self) -> str:
-        """Return a readable description including flower info."""
+        """Return a readable description of the flower."""
         return (
             super().__str__()
             + f", {self.__color} flowers"
@@ -83,17 +79,14 @@ class PrizeFlower(FloweringPlant):
         """Create a PrizeFlower.
 
         Args:
-            name: Plant name.
-            height: Initial height in centimeters. Values <= 0 become 1.
-            color: Flower color.
-            blooming: True if the plant is currently blooming.
+            name, height, color, blooming: cf. FloweringPlant
             prize_points: Points awarded by this plant.
         """
         super().__init__(name, height, color, blooming)
         self.__prize_points = prize_points
 
     def __str__(self) -> str:
-        """Return a readable description including prize points."""
+        """Return a readable description of the prize flower."""
         return (
             super().__str__()
             + f", Prize points: {self.__prize_points}"
@@ -106,7 +99,7 @@ class PrizeFlower(FloweringPlant):
 
 
 class Garden:
-    """A collection of plants with aggregated statistics about them."""
+    """A list of plants that holds statistics about them."""
 
     def __init__(self, name: str) -> None:
         """Create an empty garden.
@@ -129,14 +122,14 @@ class Garden:
         - (PlantClass, arg1, arg2, ...)
 
         Args:
-            new_plants: Specifications used to construct plants.
+            new_plants: [(PlantClass, arg1, arg2, ...), ...]
 
         Notes:
-            This method also updates internal counters:
-            - plant count
-            - type counts (regular / flowering / prize)
-            - blooming count
-            - total prize points
+            This method also updates:
+            - plant_count
+            - plant_types
+            - total_blooming
+            - total_prize_points
         """
         for plant, *args in new_plants:
             self.__plants += [plant(*args)]
@@ -153,11 +146,11 @@ class Garden:
             print(f"Added {args[0]} to {self.__name}")
 
     def increment_total_growth(self) -> None:
-        """Increment the total growth counter by 1 cm."""
+        """Increment total_growth by 1 cm."""
         self.__total_growth += 1
 
     def report(self) -> None:
-        """Print a report of the garden contents and aggregated statistics."""
+        """Print a report of the garden contents and its statistics."""
         print(f"=== {self.__name} Report ===")
         print("Plants in garden:")
         for plant in self.__plants:
@@ -175,10 +168,10 @@ class Garden:
 
     @staticmethod
     def type_index(plant: type[Plant]) -> int:
-        """Return the type index for a plant class.
+        """Return the type index for the plant_types count.
 
         Args:
-            plant: A Plant subclass (class object, not an instance).
+            plant: Plant class or a Plant child class
 
         Returns:
             0 for Plant, 1 for FloweringPlant, 2 for PrizeFlower.
@@ -191,7 +184,7 @@ class Garden:
 
     @property
     def total_growth(self) -> int:
-        """Get the accumulated growth (in cm) for all grow operations."""
+        """Get the accumulated growth value"""
         return self.__total_growth
 
     @property
@@ -251,10 +244,7 @@ class GardenManager:
             self.__gardens[garden.name] = garden
 
     def help_grow(self) -> None:
-        """Make every plant in every managed garden grow once.
-
-        Also increments each garden total growth counter.
-        """
+        """Make every plant in every managed garden grow once."""
         print(f"{self.__name} is helping all plants grow...")
         for garden_name in self.__gardens:
             garden = self.__gardens[garden_name]
@@ -294,12 +284,11 @@ class GardenManager:
         """Factory to build a manager and its gardens from specifications.
 
         Args:
-            manager_name: Name of the manager to create.
-            gardens_spec: Mapping of garden name -> list of plant specs.
-                Each plant spec is a tuple like (PlantClass, arg1, arg2, ...).
+            manager_name: cf. GardenManager
+            gardens_spec: cf. Garden
 
         Returns:
-            A fully initialized GardenManager with all gardens added.
+            An initialized GardenManager with initialized gardens registered.
         """
         manager = cls(manager_name)
         gardens: list[Garden] = []
@@ -322,7 +311,7 @@ class GardenManager:
 
     @property
     def gardens(self) -> dict[str, Garden]:
-        """Get the gardens managed by this manager (name -> Garden)."""
+        """Get the gardens managed by this manager."""
         return self.__gardens
 
     @property
@@ -331,7 +320,7 @@ class GardenManager:
         return self.__stats
 
     class GardenStats:
-        """Compute aggregated statistics across a manager's gardens."""
+        """Compute statistics across a manager's gardens."""
 
         def __init__(self, manager: "GardenManager") -> None:
             """Create a stats helper bound to a manager.
@@ -368,7 +357,7 @@ class GardenManager:
             return count
 
         def count_growth(self) -> int:
-            """Count total growth (in cm) across all managed gardens."""
+            """Count total growth across all managed gardens."""
             count: int = 0
             garden_names = self.__manager.gardens
             for name in garden_names:
@@ -379,7 +368,7 @@ class GardenManager:
         def garden_score(self) -> None:
             """Print a score for each manager based on their gardens.
 
-            Scoring rules:
+            Score rules:
             - prize points * 3
             - total growth * 2
             - total blooming * 5
@@ -401,7 +390,7 @@ class GardenManager:
             print()
 
         def height_validation(self) -> None:
-            """Check if all plants have a height >= 1 and print the result."""
+            """Check if all plants have a valid height and print the result."""
             correct_height: bool = True
             managed_gardens: int = 0
             garden_names = self.__manager.gardens
@@ -423,7 +412,7 @@ class GardenManager:
 
 
 def main() -> None:
-    """Run a small demo of the garden management system."""
+    """Run a demo of the garden management system."""
     print("=== Garden Management System Demo ===")
     print()
 
