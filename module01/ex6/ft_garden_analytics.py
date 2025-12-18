@@ -51,14 +51,28 @@ class Garden:
     def __init__(self, name: str) -> None:
         self.__plants: list[Plant] = []
         self.__name: str = name
+        self.__total_growth = 0
         self.__plant_count = 0
-        self.__plant_types = (0, 0, 0)
+        self.__plant_types = [0, 0, 0]
 
     def add(self, new_plants: list[tuple[type[Plant]], object]) -> None:
         for plant, *args in new_plants:
             self.__plants += [plant(*args)]
             self.__plant_count += 1
+            if plant is PrizeFlower:
+                self.__plant_types[2] += 1
+            elif plant is FloweringPlant:
+                self.__plant_types[1] += 1
+            elif plant is Plant:
+                self.__plant_types[0] += 1
             print(f"Added {args[0]} to {self.__name}")
+
+    def increment_total_growth(self) -> None:
+        self.__total_growth += 1
+
+    @property
+    def total_growth(self) -> int:
+        return self.__total_growth
 
     @property
     def name(self) -> str:
@@ -67,6 +81,14 @@ class Garden:
     @property
     def plants(self) -> list[Plant]:
         return self.__plants
+
+    @property
+    def plant_count(self) -> int:
+        return self.__plant_count
+
+    @property
+    def plant_types(self) -> list[int, int, int]:
+        return self.__plant_types
 
 
 class GardenManager:
@@ -85,7 +107,7 @@ class GardenManager:
             garden = self.__gardens[garden_name]
             for plant in garden.plants:
                 plant.grow()
-                self.__stats.increment_total_growth()
+                garden.increment_total_growth()
 
     def create_garden_network() -> None:
         pass
@@ -101,7 +123,6 @@ class GardenManager:
     class GardenStats:
         def __init__(self, manager: "GardenManager") -> None:
             self.__manager: GardenManager = manager
-            self.__total_growth = 0
 
         def plant_types(self) -> tuple[int, int, int]:
             regular_plant = 0
@@ -110,13 +131,9 @@ class GardenManager:
             garden_names = self.__manager.gardens
             for name in garden_names:
                 garden = self.__manager.gardens[name]
-                for plant in garden.plants:
-                    if plant.__class__ is PrizeFlower:
-                        prize_flower += 1
-                    elif plant.__class__ is FloweringPlant:
-                        flowering += 1
-                    elif plant.__class__ is Plant:
-                        regular_plant += 1
+                regular_plant += garden.plant_types[0]
+                flowering += garden.plant_types[1]
+                prize_flower += garden.plant_types[2]
             return (regular_plant, flowering, prize_flower)
 
         def count_plants(self) -> int:
@@ -124,16 +141,8 @@ class GardenManager:
             garden_names = self.__manager.gardens
             for name in garden_names:
                 garden = self.__manager.gardens[name]
-                for plant in garden.plants:
-                    count += 1
+                count += garden.plant_count
             return count
-
-        def increment_total_growth(self) -> None:
-            self.__total_growth += 1
-
-        @property
-        def total_growth(self) -> int:
-            return self.__total_growth
 
 
 def main() -> None:
@@ -148,10 +157,8 @@ def main() -> None:
 
     manager.add([g1, g2])
     manager.help_grow()
-    manager.help_grow()
 
     print(manager.stats.count_plants())
-    print(manager.stats.total_growth)
     print(manager.stats.plant_types())
 
 
