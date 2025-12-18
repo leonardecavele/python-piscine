@@ -109,8 +109,20 @@ class GardenManager:
                 plant.grow()
                 garden.increment_total_growth()
 
-    def create_garden_network() -> None:
-        pass
+    @classmethod
+    def create_garden_network(cls,
+                              manager_name: str,
+                              gardens_spec:
+                              dict[str, list[tuple[type[Plant], object]]],
+                              ) -> "GardenManager":
+        manager = cls(manager_name)
+        gardens: list[Garden] = []
+        for garden_name in gardens_spec:
+            garden = Garden(garden_name)
+            garden.add(gardens_spec[garden_name])
+            gardens += [garden]
+        manager.add(gardens)
+        return manager
 
     @property
     def gardens(self) -> dict[str, Garden]:
@@ -146,20 +158,34 @@ class GardenManager:
 
 
 def main() -> None:
-    manager = GardenManager("Alice")
+    m1 = GardenManager("Alice")
 
     g1 = Garden("South garden")
     g1.add([(Plant, "Basil", 25), (FloweringPlant, "Rose", 60, "Red", 0),
            (PrizeFlower, "Orchid", 120, "White", 1, 9)])
-
     g2 = Garden("North Garden")
     g2.add([(Plant, "Oak", 3000), (FloweringPlant, "Tulip", 40, "Yellow", 0)])
-
-    manager.add([g1, g2])
-    manager.help_grow()
-
-    print(manager.stats.count_plants())
-    print(manager.stats.plant_types())
+    m1.add([g1, g2])
+    m1.help_grow()
+    print(m1.stats.count_plants())
+    print(m1.stats.plant_types())
+    m2 = GardenManager.create_garden_network(
+        "Jean",
+        {
+            "East garden": [
+                (Plant, "Grass", 30),
+                (Plant, "Spruce", 300),
+            ],
+            "West garden": [
+                (Plant, "Basil", 25),
+                (FloweringPlant, "Rose", 60, "Red", True),
+                (PrizeFlower, "Orchid", 120, "White", True, 9),
+            ],
+        },
+    )
+    m2.help_grow()
+    print(m2.stats.count_plants())
+    print(m2.stats.plant_types())
 
 
 if __name__ == "__main__":
