@@ -1,11 +1,18 @@
 class Plant:
     def __init__(self, name: str, height: int) -> None:
         self.__name: str = name
-        self.__height: int = height
+        self.__height: int = Plant.valid_height(height)
 
     def grow(self) -> None:
         self.__height += 1
         print(f"{self.__name} grew 1cm")
+
+    @staticmethod
+    def valid_height(height: int) -> int:
+        if height > 0:
+            return height
+        else:
+            return 1
 
     @property
     def name(self) -> str:
@@ -59,16 +66,19 @@ class Garden:
         for plant, *args in new_plants:
             self.__plants += [plant(*args)]
             self.__plant_count += 1
-            if plant is PrizeFlower:
-                self.__plant_types[2] += 1
-            elif plant is FloweringPlant:
-                self.__plant_types[1] += 1
-            elif plant is Plant:
-                self.__plant_types[0] += 1
+            self.__plant_types[Garden.type_index(plant)] += 1
             print(f"Added {args[0]} to {self.__name}")
 
     def increment_total_growth(self) -> None:
         self.__total_growth += 1
+
+    @staticmethod
+    def type_index(plant: type[Plant]) -> int:
+        if plant is PrizeFlower:
+            return 2
+        if plant is FloweringPlant:
+            return 1
+        return 0
 
     @property
     def total_growth(self) -> int:
@@ -161,10 +171,11 @@ def main() -> None:
     m1 = GardenManager("Alice")
 
     g1 = Garden("South garden")
-    g1.add([(Plant, "Basil", 25), (FloweringPlant, "Rose", 60, "Red", 0),
-           (PrizeFlower, "Orchid", 120, "White", 1, 9)])
+    g1.add([(Plant, "Basil", 25), (FloweringPlant, "Rose", 60, "Red", False),
+           (PrizeFlower, "Orchid", 120, "White", True, 9)])
     g2 = Garden("North Garden")
-    g2.add([(Plant, "Oak", 3000), (FloweringPlant, "Tulip", 40, "Yellow", 0)])
+    g2.add([(Plant, "Oak", 3000),
+            (FloweringPlant, "Tulip", 40, "Yellow", False)])
     m1.add([g1, g2])
     m1.help_grow()
     print(m1.stats.count_plants())
