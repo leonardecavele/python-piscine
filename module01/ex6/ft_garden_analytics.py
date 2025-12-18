@@ -31,13 +31,11 @@ class Plant:
         else:
             return 1
 
-    @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         """Get the plant name."""
         return self.__name
 
-    @property
-    def height(self) -> int:
+    def get_height(self) -> int:
         """Get the current plant height."""
         return self.__height
 
@@ -92,8 +90,7 @@ class PrizeFlower(FloweringPlant):
             + f", Prize points: {self.__prize_points}"
             )
 
-    @property
-    def prize_points(self) -> int:
+    def get_prize_points(self) -> int:
         """Get the prize points value."""
         return self.__prize_points
 
@@ -182,38 +179,31 @@ class Garden:
             return 1
         return 0
 
-    @property
-    def total_growth(self) -> int:
+    def get_total_growth(self) -> int:
         """Get the accumulated growth value"""
         return self.__total_growth
 
-    @property
-    def total_blooming(self) -> int:
+    def get_total_blooming(self) -> int:
         """Get how many flowering/prize plants were added in blooming state."""
         return self.__total_blooming
 
-    @property
-    def total_prize_points(self) -> int:
+    def get_total_prize_points(self) -> int:
         """Get the total prize points from all added prize flowers."""
         return self.__total_prize_points
 
-    @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         """Get the garden name."""
         return self.__name
 
-    @property
-    def plants(self) -> list[Plant]:
+    def get_plants(self) -> list[Plant]:
         """Get the list of plant instances in the garden."""
         return self.__plants
 
-    @property
-    def plant_count(self) -> int:
+    def get_plant_count(self) -> int:
         """Get the number of plants added to this garden."""
         return self.__plant_count
 
-    @property
-    def plant_types(self) -> list[int]:
+    def get_plant_types(self) -> list[int]:
         """Get type counts as [regular, flowering, prize]."""
         return self.__plant_types
 
@@ -241,14 +231,14 @@ class GardenManager:
             gardens: Gardens to manage.
         """
         for garden in gardens:
-            self.__gardens[garden.name] = garden
+            self.__gardens[garden.get_name()] = garden
 
     def help_grow(self) -> None:
         """Make every plant in every managed garden grow once."""
         print(f"{self.__name} is helping all plants grow...")
         for garden_name in self.__gardens:
             garden = self.__gardens[garden_name]
-            for plant in garden.plants:
+            for plant in garden.get_plants():
                 plant.grow()
                 garden.increment_total_growth()
 
@@ -257,7 +247,7 @@ class GardenManager:
         print(f"=== {self.__name} Report ===")
         for garden_name in self.__gardens:
             print(f"Plants in {garden_name}:")
-            plants = self.__gardens[garden_name].plants
+            plants = self.__gardens[garden_name].get_plants()
             for plant in plants:
                 print(plant)
             print()
@@ -299,23 +289,19 @@ class GardenManager:
         manager.add(gardens)
         return manager
 
-    @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         """Get the manager name."""
         return self.__name
 
-    @property
-    def managers(self) -> list["GardenManager"]:
+    def get_managers(self) -> list["GardenManager"]:
         """Get the list of all GardenManager instances created so far."""
         return self.__managers
 
-    @property
-    def gardens(self) -> dict[str, Garden]:
+    def get_gardens(self) -> dict[str, Garden]:
         """Get the gardens managed by this manager."""
         return self.__gardens
 
-    @property
-    def stats(self) -> "GardenManager.GardenStats":
+    def get_stats(self) -> "GardenManager.GardenStats":
         """Get the stats helper for this manager."""
         return self.__stats
 
@@ -339,30 +325,30 @@ class GardenManager:
             regular_plant = 0
             flowering = 0
             prize_flower = 0
-            garden_names = self.__manager.gardens
+            garden_names = self.__manager.get_gardens()
             for name in garden_names:
-                garden = self.__manager.gardens[name]
-                regular_plant += garden.plant_types[0]
-                flowering += garden.plant_types[1]
-                prize_flower += garden.plant_types[2]
+                garden = self.__manager.get_gardens()[name]
+                regular_plant += garden.get_plant_types()[0]
+                flowering += garden.get_plant_types()[1]
+                prize_flower += garden.get_plant_types()[2]
             return (regular_plant, flowering, prize_flower)
 
         def count_plants(self) -> int:
             """Count total number of plants across all managed gardens."""
             count: int = 0
-            garden_names = self.__manager.gardens
+            garden_names = self.__manager.get_gardens()
             for name in garden_names:
-                garden = self.__manager.gardens[name]
-                count += garden.plant_count
+                garden = self.__manager.get_gardens()[name]
+                count += garden.get_plant_count()
             return count
 
         def count_growth(self) -> int:
             """Count total growth across all managed gardens."""
             count: int = 0
-            garden_names = self.__manager.gardens
+            garden_names = self.__manager.get_gardens()
             for name in garden_names:
-                garden = self.__manager.gardens[name]
-                count += garden.total_growth
+                garden = self.__manager.get_gardens()[name]
+                count += garden.get_total_growth()
             return count
 
         def garden_score(self) -> None:
@@ -374,18 +360,18 @@ class GardenManager:
             - total blooming * 5
             """
             score: int = -1
-            managers: list["GardenManager"] = self.__manager.managers
+            managers: list["GardenManager"] = self.__manager.get_managers()
             print("Garden scores - ", end='')
             for manager in managers:
                 if score != -1:
                     print(", ", end='')
                 score = 0
-                print(f"{manager.name}: ", end='')
-                garden_names = manager.gardens
+                print(f"{manager.get_name()}: ", end='')
+                garden_names = manager.get_gardens()
                 for name in garden_names:
-                    score += manager.gardens[name].total_prize_points * 3
-                    score += manager.gardens[name].total_growth * 2
-                    score += manager.gardens[name].total_blooming * 5
+                    score += manager.get_gardens()[name].get_total_prize_points() * 3
+                    score += manager.get_gardens()[name].get_total_growth() * 2
+                    score += manager.get_gardens()[name].get_total_blooming() * 5
                 print(f"{score}", end='')
             print()
 
@@ -393,19 +379,19 @@ class GardenManager:
             """Check if all plants have a valid height and print the result."""
             correct_height: bool = True
             managed_gardens: int = 0
-            garden_names = self.__manager.gardens
+            garden_names = self.__manager.get_gardens()
             for name in garden_names:
                 managed_gardens += 1
-                garden = self.__manager.gardens[name]
-                for plant in garden.plants:
-                    if plant.height < 1:
+                garden = self.__manager.get_gardens()[name]
+                for plant in garden.get_plants():
+                    if plant.get_height() < 1:
                         correct_height = False
             print(f"Height validation test: {correct_height}")
 
         def gardens_managed(self) -> None:
             """Print how many gardens are managed by the manager."""
             managed_gardens: int = 0
-            garden_names = self.__manager.gardens
+            garden_names = self.__manager.get_gardens()
             for name in garden_names:
                 managed_gardens += 1
             print(f"Total gardens managed: {managed_gardens}")
