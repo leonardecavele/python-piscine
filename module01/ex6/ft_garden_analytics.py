@@ -57,6 +57,14 @@ class FloweringPlant(Plant):
         self.__color = color
         self.__blooming = blooming
 
+    def get_color(self) -> str:
+        """get the flower color"""
+        return self.__color
+
+    def is_blooming(self) -> bool:
+        """get true if the plant is blooming"""
+        return self.__blooming
+
     def get_info(self) -> None:
         """print the flower information"""
         print(
@@ -87,8 +95,8 @@ class PrizeFlower(FloweringPlant):
         """print the prize flower information"""
         print(
             f"- {self.get_name()}: {self.get_height()}cm"
-            f", {self.__FloweringPlant__color} flowers"
-            f" ({'blooming' if self.__FloweringPlant__blooming else 'not blooming'})"
+            f", {self.get_color()} flowers"
+            f" ({'blooming' if self.is_blooming() else 'not blooming'})"
             f", Prize points: {self.__prize_points}"
         )
 
