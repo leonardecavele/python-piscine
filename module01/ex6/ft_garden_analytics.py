@@ -359,9 +359,10 @@ class GardenManager:
                 print(f"{manager.get_name()}: ", end='')
                 garden_names = manager.get_gardens()
                 for name in garden_names:
-                    score += manager.get_gardens()[name].get_total_prize_points() * 3
-                    score += manager.get_gardens()[name].get_total_growth() * 2
-                    score += manager.get_gardens()[name].get_total_blooming() * 5
+                    g = manager.get_gardens()[name]
+                    score += g.get_total_prize_points() * 3
+                    score += g.get_total_growth() * 2
+                    score += g.get_total_blooming() * 5
                 print(f"{score}", end='')
             print()
 
@@ -416,6 +417,7 @@ def main() -> None:
     )
     print()
 
+    m1.help_grow()
     m2.help_grow()
     print()
 
