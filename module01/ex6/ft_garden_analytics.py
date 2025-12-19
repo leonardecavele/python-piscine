@@ -384,34 +384,25 @@ def main() -> None:
     print("=== Garden Management System Demo ===")
     print()
 
-    m1 = GardenManager("Alice")
-
-    g1 = Garden("South garden")
-    g1.add([(Plant, "Basil", 25), (FloweringPlant, "Rose", 60, "Red", False),
-           (PrizeFlower, "Orchid", 120, "White", True, 9)])
-    g2 = Garden("North Garden")
-    g2.add([(Plant, "Oak", 3000),
-            (FloweringPlant, "Tulip", 40, "Yellow", False)])
-    m1.add([g1, g2])
-    print()
-
-    m1.help_grow()
-    print()
-
-    g1.report()
-    print()
-
-    m2 = GardenManager.create_garden_network(
+    m1 = GardenManager.create_garden_network(
         "Jean",
         {
-            "East garden": [
-                (Plant, "Grass", 30),
-                (Plant, "Spruce", 300),
+            "Eath garden": [
+                (Plant, "Spruce", 450),
             ],
-            "West garden": [
-                (Plant, "Basil", 25),
-                (FloweringPlant, "Rose", 60, "Red", True),
-                (PrizeFlower, "Orchid", 120, "White", True, 9),
+        },
+    )
+    m2 = GardenManager.create_garden_network(
+        "Eude",
+        {
+            "South garden": [
+                (Plant, "Baobab", 250),
+                (FloweringPlant, "Dandelion", 35, "white", True),
+                (PrizeFlower, "Daisy", 45, "purple", False, 7),
+            ],
+            "North garden": [
+                (Plant, "Bamboo", 180),
+                (FloweringPlant, "Tulip", 20, "red", False),
             ],
         },
     )
@@ -420,8 +411,6 @@ def main() -> None:
     m2.help_grow()
     print()
 
-    m1.report()
-    print()
     m2.report()
 
 
