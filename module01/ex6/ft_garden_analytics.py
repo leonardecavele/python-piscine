@@ -87,8 +87,8 @@ class PrizeFlower(FloweringPlant):
         """print the prize flower information"""
         print(
             f"- {self.get_name()}: {self.get_height()}cm"
-            f", {self._FloweringPlant__color} flowers"
-            f" ({'blooming' if self._FloweringPlant__blooming else 'not blooming'})"
+            f", {self.__FloweringPlant__color} flowers"
+            f" ({'blooming' if self.__FloweringPlant__blooming else 'not blooming'})"
             f", Prize points: {self.__prize_points}"
         )
 
@@ -387,7 +387,7 @@ def main() -> None:
     m1 = GardenManager.create_garden_network(
         "Jean",
         {
-            "Eath garden": [
+            "East garden": [
                 (Plant, "Spruce", 450),
             ],
         },
