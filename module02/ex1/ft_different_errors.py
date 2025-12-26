@@ -10,6 +10,7 @@ def garden_operations(operation: int) -> None:
         plants = {}
         _ = plants["missing_plant"]
 
+
 def test_error_types() -> None:
     print("=== Garden Error Types Demo ===")
     print()
