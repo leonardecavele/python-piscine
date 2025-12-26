@@ -1,4 +1,5 @@
 def garden_operations(operation: int) -> None:
+    """trigger a specific error depending on the value of 'operation'"""
     if operation == 0:
         int("ValueError")
     elif operation == 1:
@@ -12,6 +13,7 @@ def garden_operations(operation: int) -> None:
 
 
 def test_error_types() -> None:
+    """use all modes of 'garden_operations' to show all errors"""
     print("=== Garden Error Types Demo ===")
     print()
 

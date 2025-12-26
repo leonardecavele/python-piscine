@@ -1,24 +1,30 @@
 class GardenError(Exception):
+    """class for garden-related errors"""
     pass
 
 
 class PlantError(GardenError):
+    """class for plant-related errors"""
     pass
 
 
 class WaterError(GardenError):
+    """class for water-related errors"""
     pass
 
 
 def plant_error() -> None:
+    """trigger a PlantError error"""
     raise PlantError("The tomato plant is wilting!")
 
 
 def water_error() -> None:
+    """trigger a WaterError error"""
     raise WaterError("Not enough water in the tank!")
 
 
 def main() -> None:
+    """use error functions to show all custom errors"""
     print("=== Custom Garden Errors Demo ===")
     print()
 
