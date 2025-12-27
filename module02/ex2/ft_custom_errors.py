@@ -1,16 +1,13 @@
 class GardenError(Exception):
     """class for garden-related errors"""
-    pass
 
 
 class PlantError(GardenError):
     """class for plant-related errors"""
-    pass
 
 
 class WaterError(GardenError):
     """class for water-related errors"""
-    pass
 
 
 def plant_error() -> None:
