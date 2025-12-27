@@ -207,7 +207,7 @@ class GardenManager:
     __managers: list["GardenManager"] = []
 
     def __init__(self, name: str) -> None:
-        """create a garden manager.
+        """create a garden manager
 
            name :   manager name
         """
